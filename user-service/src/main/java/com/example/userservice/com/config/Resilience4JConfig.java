@@ -2,6 +2,7 @@ package com.example.userservice.com.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import io.grpc.StatusRuntimeException;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
@@ -72,7 +73,7 @@ public class Resilience4JConfig {
                  */
                 .permittedNumberOfCallsInHalfOpenState(20)
                 .minimumNumberOfCalls(20) // 최소 20번 호출 후에 실패율을 계산
-                .recordExceptions(IOException.class, TimeoutException.class) // 해당 예외들을 실패로 기록한다.
+                .recordExceptions(IOException.class, TimeoutException.class, StatusRuntimeException.class) // 해당 예외들을 실패로 기록한다.
 //                .ignoreExceptions()
                 .build();
 

@@ -5,7 +5,6 @@ import com.example.orderservice.grpc.GetOrdersResponse;
 import com.example.orderservice.grpc.Order;
 import com.example.orderservice.grpc.OrderServiceGrpc;
 import com.example.userservice.api.user.vo.ResponseOrder;
-import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,23 +34,17 @@ public class OrderServiceGrpcClient {
      * @return 사용자 주문 목록
      */
     public List<ResponseOrder> getOrders(String userId) {
-        try {
-            log.debug("gRPC: Calling getOrdersByUserId for userId: {}", userId);
+        log.debug("gRPC: Calling getOrdersByUserId for userId: {}", userId);
 
-            GetOrdersRequest request = GetOrdersRequest.newBuilder()
-                    .setUserId(userId)
-                    .build();
+        GetOrdersRequest request = GetOrdersRequest.newBuilder()
+                .setUserId(userId)
+                .build();
 
-            GetOrdersResponse response = orderServiceStub.getOrdersByUserId(request);
+        GetOrdersResponse response = orderServiceStub.getOrdersByUserId(request);
 
-            return response.getOrdersList().stream()
-                    .map(this::convertToResponseOrder)
-                    .collect(Collectors.toList());
-
-        } catch (StatusRuntimeException e) {
-            log.error("gRPC: Error calling getOrdersByUserId for userId: {}", userId, e);
-            return new ArrayList<>();
-        }
+        return response.getOrdersList().stream()
+                .map(this::convertToResponseOrder)
+                .collect(Collectors.toList());
     }
 
     /**
