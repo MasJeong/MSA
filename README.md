@@ -122,27 +122,6 @@ flowchart TB
 - 재고 차감 요청 이벤트가 전송되지 않은 경우 주문이 성공 처리되지 않도록 보상 경로 구성
 - 재고 차감 실패 원인을 `StockResultEvent.reason` 필드와 로그에 기록
 
-### 3) Kafka 재고 이벤트 검증
-
-**문제 인식**
-
-- `catalog-service`는 Kafka 메시지를 기준으로 상품 재고를 차감하거나 복원
-- JSON 형식 오류 또는 필수 값 누락 시 어떤 주문의 어떤 상품을 처리할지 판단 불가
-- 지원하지 않는 `eventType` 처리 시 의도하지 않은 재고 변경 가능
-
-**해결 방향**
-
-- JSON 파싱 실패 시 오류 로그 기록 후 처리 종료
-- `orderId`, `productId`, `qty`, `eventType`이 없으면 오류 로그 기록 후 처리 종료
-- `CATALOG_STOCK_DECREASE`, `CATALOG_STOCK_RESTORE` 외 이벤트 타입은 경고 로그 기록 후 처리 종료
-- 상품 없음 또는 재고 부족 발생 시 `CATALOG_STOCK_UPDATE_RESULT` 토픽으로 실패 결과 발행
-
-**결과**
-
-- 형식이 잘못된 메시지는 재고 변경 로직에 진입하지 않음
-- 상품 없음과 재고 부족은 `CATALOG_STOCK_UPDATE_RESULT` 토픽을 통해 `order-service`에 전달
-- `CATALOG_STOCK_UPDATE_RESULT` 토픽 발행 실패 시 `KafkaProducer.send()`에서 `IllegalStateException` 발생
-
 ## 기술 스택
 
 | 영역 | 기술 |
