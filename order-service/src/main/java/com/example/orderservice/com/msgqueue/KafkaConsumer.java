@@ -8,13 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * 카탈로그 재고 처리 결과를 수신해 주문 보상 로직을 수행하는 Kafka consumer.
  */
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class KafkaConsumer {
 

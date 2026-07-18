@@ -7,14 +7,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**
  * 카탈로그 재고 이벤트를 수신해 차감/복원 처리하고 결과를 발행하는 Kafka consumer.
  */
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class KafkaConsumer {
 

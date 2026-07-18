@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
  * catalog-service에서 Kafka 이벤트 발행을 담당하는 프로듀서.
  */
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class KafkaProducer {
 
